@@ -914,9 +914,11 @@ public abstract class BasicListComponent<T extends ViewGroup & ListComponentView
             @Override
             public boolean onTouch(View v, MotionEvent event) {
               if (MotionEventCompat.getActionMasked(event) == MotionEvent.ACTION_DOWN) {
+                T view = getHostView();
+                view.getInnerView().setItemAnimator(mItemAnimator);
                 mDragHelper.startDrag(holder);
               }
-              return true;
+              return false;
             }
           });
         } else {

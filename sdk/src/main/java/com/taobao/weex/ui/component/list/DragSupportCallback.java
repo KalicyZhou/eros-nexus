@@ -78,7 +78,7 @@ class DragSupportCallback extends ItemTouchHelper.Callback {
             return false;
         }
 
-        if (mDragHelper.isDragExcluded(viewHolder)) {
+        if (mDragHelper.isDragExcluded(target)) {
             return false;
         }
 

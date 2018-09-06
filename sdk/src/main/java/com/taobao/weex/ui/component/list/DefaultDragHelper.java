@@ -61,6 +61,8 @@ class DefaultDragHelper implements DragHelper {
 
     private boolean isDraggable = false;
 
+    private boolean canDraggable = false;
+
     DefaultDragHelper(@NonNull List<WXComponent> dataSource, @NonNull RecyclerView recyclerView, @NonNull EventTrigger trigger) {
         this.mDataSource = dataSource;
         this.mEventTrigger = trigger;
@@ -104,8 +106,17 @@ class DefaultDragHelper implements DragHelper {
         }
 
         if (fromPos >= 0 && fromPos <= mDataSource.size() - 1 && toPos >= 0 && toPos <= mDataSource.size() - 1) {
-            Collections.swap(mDataSource, fromPos, toPos);
+            if (fromPos < toPos) {
+                for (int i = fromPos; i < toPos; i++) {
+                    Collections.swap(mDataSource, i, i + 1);
+                }
+            } else {
+                for (int i = fromPos; i > toPos; i--) {
+                    Collections.swap(mDataSource, i, i - 1);
+                }
+            }
             adapter.notifyItemMoved(fromPos, toPos);
+            adapter.notifyDataSetChanged();
         }
     }
 
@@ -128,11 +139,12 @@ class DefaultDragHelper implements DragHelper {
 
     @Override
     public boolean isDraggable() {
-        return this.isDraggable;
+        return this.canDraggable;
     }
 
     @Override
     public void setDraggable(boolean draggable) {
+        if (draggable) this.canDraggable = draggable;
         this.isDraggable = draggable;
     }
 
